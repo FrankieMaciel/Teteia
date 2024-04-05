@@ -6,24 +6,19 @@ package tulipa.engine;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class App {
-    public String getGreeting() {
-        return "Olá mundo!";
-    }
+import tulipa.engine.render.*;
+import java.awt.*;
 
+public class App 
+{
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        
+        Window window = new Window();
+        GameRenderer render = new GameRenderer(window);
 
-        JFrame janela = new JFrame("Teteia");
+        float[] point1 = {0f, 0f};
+        float[] point2 = {100f, 100f};
 
-        JLabel rotulo = new JLabel("teste da tulipa");
-
-        janela.add(rotulo);
-
-        janela.setSize(300, 200);
-
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        janela.setVisible(true);
+        window.drawLine(point1, point2, Color.BLUE);
     }
 }
