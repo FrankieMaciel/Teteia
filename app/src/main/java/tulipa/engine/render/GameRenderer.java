@@ -1,7 +1,6 @@
 package tulipa.engine.render;
 
 import tulipa.engine.Window;
-import java.awt.*;
 
 public class GameRenderer 
 {

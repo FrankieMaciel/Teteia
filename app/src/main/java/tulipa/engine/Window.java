@@ -51,19 +51,36 @@ public class Window extends JPanel
   }
 
   public void drawPixel(int x, int y, int size, Color cor) {
-
-    if (x + 10 > width || x - 10 < 0) return;
-    if (y + 10 > heigth || y - 10 < 0) return;
-
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             if (x + i >= 0 && x + i < width && y + j >= 0 && y + j < heigth) {
-              image.setRGB(x + i, y + j, cor.getRGB());
+
+              if (cor.getAlpha() >= 255) {
+                image.setRGB(x + i, y + j, cor.getRGB());
+                continue;
+              }
+
+              Color bgColor = new Color(image.getRGB(x + i, y + j));
+              Color transparentColor = blendColors(cor, bgColor);
+
+              image.setRGB(x + i, y + j, transparentColor.getRGB());
             }
-            repaint();
+          }
         }
-    }
+    repaint();
   }
+
+  private Color blendColors(Color color1, Color color2) {
+    float alpha = (float) color1.getAlpha() / 255.0f;
+    float beta = 1.0f - alpha;
+
+    int red = (int) (color1.getRed() * alpha + color2.getRed() * beta);
+    int green = (int) (color1.getGreen() * alpha + color2.getGreen() * beta);
+    int blue = (int) (color1.getBlue() * alpha + color2.getBlue() * beta);
+
+    return new Color(red, green, blue);
+  }
+
   public void drawLine(
     float[] v1,
     float[] v2,
