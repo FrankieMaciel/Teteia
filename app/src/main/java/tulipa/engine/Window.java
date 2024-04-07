@@ -50,24 +50,33 @@ public class Window extends JPanel
       g.drawImage(image, 0, 0, this);
   }
 
-  public void drawPixel(int x, int y, int size, Color cor) {
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            if (x + i >= 0 && x + i < width && y + j >= 0 && y + j < heigth) {
-
-              if (cor.getAlpha() >= 255) {
-                image.setRGB(x + i, y + j, cor.getRGB());
-                continue;
-              }
-
-              Color bgColor = new Color(image.getRGB(x + i, y + j));
-              Color transparentColor = blendColors(cor, bgColor);
-
-              image.setRGB(x + i, y + j, transparentColor.getRGB());
-            }
-          }
-        }
+  public void repaintScreen() {
     repaint();
+  }
+
+  public void cleanScreen() {
+    image = new BufferedImage(width, heigth, BufferedImage.TYPE_INT_RGB);
+  }
+
+  public void drawPixel(int x, int y, int size, Color cor) {
+
+    for (int i = 0; i < size * size; i++) {
+
+      int nx = i % size;
+      int ny = i / size;
+
+      if (x + nx < 0 || x + nx >= width || y + ny < 0 || y + ny >= heigth) continue;
+
+      if (cor.getAlpha() >= 255) {
+        image.setRGB(x + nx, y + ny, cor.getRGB());
+        continue;
+      }
+
+      Color bgColor = new Color(image.getRGB(x + nx, y + ny));
+      Color transparentColor = blendColors(cor, bgColor);
+
+      image.setRGB(x + nx, y + ny, transparentColor.getRGB());
+    }
   }
 
   private Color blendColors(Color color1, Color color2) {

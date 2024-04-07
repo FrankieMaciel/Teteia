@@ -31,6 +31,12 @@ public class Texture {
     }
   }
 
+  public Texture(int sizeX, int sizeY) {
+    width = sizeX;
+    height = sizeY;
+    pixels = new Pixel[sizeX * sizeY];
+  }
+
   public static BufferedImage loadTexture(String filePath) {
     try {
         BufferedImage image = ImageIO.read(new File(filePath));
